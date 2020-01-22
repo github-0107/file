@@ -1,0 +1,1 @@
+for /r %f in (*.pack) do "%JAVA_HOME%\bin\unpack200.exe" -r -q "%f" "%~pf%~nf.jar"
