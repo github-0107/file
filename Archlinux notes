@@ -1,0 +1,14 @@
+Archlinux手动添加windows10引导(1 or 2)
+  1.url：https://www.jianshu.com/p/5007e555ec12
+  2./boot/grub/grub.cfg
+    menuentry "Microsoft Windows 10" {
+      insmod part_get
+      insmod fat
+      insmod search_fs_uuid
+      insmod chain
+      search --fs-uuid --set=root $hints_string $fs_uuid
+      chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+    }
+    
+    $hints_string: sudo grub-probe --target=hints_string /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi
+    $fs_uuid: sudo grub-probe --target=fs_uuid /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi
