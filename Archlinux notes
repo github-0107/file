@@ -1,4 +1,4 @@
-Archlinux手动添加windows10引导(1 or 2)
+一、Archlinux手动添加windows10引导(1 or 2)
   1.url：https://www.jianshu.com/p/5007e555ec12
   2./boot/grub/grub.cfg
     menuentry "Microsoft Windows 10" {
@@ -12,3 +12,46 @@ Archlinux手动添加windows10引导(1 or 2)
     
     $hints_string: sudo grub-probe --target=hints_string /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi
     $fs_uuid: sudo grub-probe --target=fs_uuid /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi
+二、蓝牙使用（http://blog.lujun9972.win/blog/2017/07/18/%E5%9C%A8archlinux%E4%B8%AD%E4%BD%BF%E7%94%A8%E8%93%9D%E7%89%99%E8%80%B3%E6%9C%BA/）
+  1.安装
+     pacman -S bluez bluez-utils pulseaudio-bluetooth pavucontrol pulseaudio-alsa
+       bluez软件包提供蓝牙协议栈
+       bluez-utils软件包提供bluetoothctl工具
+       pulseaudio-bluetooth则为bluez提供了PulseAudio音频服务,若没有安装则蓝牙设备在配对完成后,连接会失败,提示
+       pavucontrol则提供了pulseaudio的图形化控制界面
+       pulseaudio-alsa(可选)则使pulseaudio和alsa协同使用，之后就可以用alsamixer来管理蓝牙音频了
+  2.启动蓝牙服务
+     systemctl enable bluetooth
+     systemctl start bluetooth
+  3.启动pulseaudio服务
+     pulseaudio -k                   # 确保没有pulseaudio启动
+     pulseaudio --start              # 启动pulseaudio服务
+三、KDE双显卡（https://www.jianshu.com/p/05bf79b1878b）
+  1.查看显卡型号与安装驱动
+     lspci -k | grep -A 2 -E "(VGA|3D)"
+     sudo pacman -S nvidia
+  2.驱动配置
+     sudo nvidia-xconfig
+       Section "Module"
+         Load "modesetting"
+       EndSection
+
+    Section "Device"
+        Identifier "nvidia"
+        Driver "nvidia"
+        BusID "<BusID for NVIDIA device here>"  修改相应的busID
+        Option "AllowEmptyInitialConfiguration"
+    EndSection
+  3.sddm配置
+    sudo vim /usr/share/sddm/scripts/Xsetup
+    xrandr --setprovideroutputsource modesetting NVIDIA-0
+    xrandr --auto
+  4.解决屏幕撕裂
+    (1)在内核选项中添加参数
+      sudo vim /etc/default/grub
+      GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1"
+    (2)编辑/etc/mkinitcpio.conf
+      MODULES=(nouveau nvidia nvidia_modeset nvidia_uvm nvidia_drm)
+    (3)运行并查看状态
+      sudo mkinitcpio -p linux
+      nvidia-smi
