@@ -12,6 +12,7 @@
     
     $hints_string: sudo grub-probe --target=hints_string /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi
     $fs_uuid: sudo grub-probe --target=fs_uuid /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi
+  3.使用refind自动配置添加
 二、蓝牙使用（http://blog.lujun9972.win/blog/2017/07/18/%E5%9C%A8archlinux%E4%B8%AD%E4%BD%BF%E7%94%A8%E8%93%9D%E7%89%99%E8%80%B3%E6%9C%BA/）
   1.安装
      pacman -S bluez bluez-utils pulseaudio-bluetooth pavucontrol pulseaudio-alsa
@@ -55,3 +56,7 @@
     (3)运行并查看状态
       sudo mkinitcpio -p linux
       nvidia-smi
+四、双显卡切换
+    sudo pacman -S bbswitch optimus-manager-qt-kde 或者 sudo pacman -S bbswith-dkms optimus-manager-qt
+
+
