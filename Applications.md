@@ -33,6 +33,7 @@
 - NeatDM（windows）
 - Free Download Manager
 - Internet Download Manager（windows）
+- motrix
 
 ## Develop
 - VsCode - IDE
@@ -54,3 +55,7 @@
 - vmware
 - VirtualBox
 - qemu
+
+## 视频剪辑
+- Shotcut
+- kdenlive
